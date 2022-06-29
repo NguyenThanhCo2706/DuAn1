@@ -15,6 +15,21 @@ const studentController = {
             res.status(500).json(err)
         }
     },
+    getStudentByName: async (req, res) => {
+        try {
+            let str = req.query.name;
+            let students = await Students.find({ "name": { $regex: str } });
+            if (students) {
+                res.status(200).json(students);
+            }
+            else {
+                res.status(500).json('No student found')
+            }
+        }
+        catch (err) {
+            res.status(500).json(err)
+        }
+    },
     getStudent: async (req, res) => {
         try {
             id = req.query.id;
@@ -41,7 +56,7 @@ const studentController = {
             let gender = req.body.gender;
             let birth = req.body.birth;
             let address = req.body.address;
-            let avatar = req.body.avatar;
+            let avatar = req.file.originalname;
             if (name && gender && birth && avatar && address) {
                 const newStudent = await Students({
                     name: name,

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 
@@ -36,32 +36,37 @@ const Login = (props) => {
         }
     }
     return (
-        <>
-            <form onSubmit={handleSubmit}>
+        <div className="d-flex flex-column align-items-center">
+
+            <form onSubmit={handleSubmit} className="w-50 p-5 bg-light rounded-3">
+                <h2 className="text-center mb-2">Login</h2>
                 <div className="mb-3">
                     <label className="form-label">UserName</label>
                     <input
                         type="text"
-                        className="form-control w-25"
+                        className="form-control"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
-                    <div className="form-text">We'll never share your username with anyone else.</div>
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Password</label>
                     <input
                         type="password"
-                        className="form-control w-25"
+                        className="form-control"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <div className="d-flex">
+                <div className="d-flex justify-content-center">
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
             </form>
-        </>
+            <div>
+                <span>You don't have an account? </span>
+                <Link className="navbar-brand" to="/register">Register</Link>
+            </div>
+        </div>
     );
 }
 

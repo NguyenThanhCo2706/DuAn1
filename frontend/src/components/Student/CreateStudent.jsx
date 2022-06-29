@@ -5,7 +5,7 @@ import { useState } from "react";
 
 
 
-const UpdateStudent = () => {
+const CreateStudent = () => {
 
     const [name, setName] = useState("")
     const [gender, setGender] = useState(false)
@@ -33,7 +33,7 @@ const UpdateStudent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         console.log(birth)
-        const dataForm = new URLSearchParams();
+        const dataForm = new FormData();
         dataForm.append("name", name)
         dataForm.append("gender", gender)
         dataForm.append("birth", birth)
@@ -53,6 +53,10 @@ const UpdateStudent = () => {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleFileSelect = (event) => {
+        setAvatar(event.target.files[0])
     }
 
     return (
@@ -106,12 +110,13 @@ const UpdateStudent = () => {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Avatar</label>
-                    <input
+                    <input type="file" onChange={handleFileSelect} />
+                    {/* <input
                         type="text"
                         className="form-control w-25"
                         value={avatar}
                         onChange={(e) => setAvatar(e.target.value)}
-                    />
+                    /> */}
                     <div className="form-text">We'll never share your username with anyone else.</div>
                 </div>
                 <div className="d-flex">
@@ -122,4 +127,4 @@ const UpdateStudent = () => {
     );
 }
 
-export default UpdateStudent;
+export default CreateStudent;

@@ -4,9 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 
-const HomePage = () => {
-    const [students, setStudents] = useState()
-    console.log(students)
+const HomePage = (props) => {
+    const { students, setStudents } = props
     let navigate = useNavigate()
     function getCookie(cname) {
         let name = cname + "=";
@@ -23,12 +22,7 @@ const HomePage = () => {
         }
         return "";
     }
-    useEffect(() => {
-        axios.get('http://localhost:3001/student/list').then((data) => {
-            setStudents(data.data);
-        })
 
-    }, [])
     const handleDelete = async (id) => {
         try {
             await axios.delete('http://localhost:3001/student/', {
@@ -46,6 +40,7 @@ const HomePage = () => {
     }
     return (
         <>
+            <h1 className="text-center">Student </h1>
             <table className="table table-striped">
                 <thead>
                     <tr>

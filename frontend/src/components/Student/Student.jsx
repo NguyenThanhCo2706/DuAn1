@@ -42,11 +42,16 @@ const Student = () => {
 
     return (
         <>
-            <h1>{student?.name}</h1>
-            <h3>{student?.gender ? 'Nam' : 'Nữ'}</h3>
-            <h3>{student?.birth}</h3>
-            <h3>{student?.address}</h3>
-            <img src={student?.avatar}></img>
+            {student ?
+                <><h1>{student.name}</h1>
+                    <h3>{student.gender ? 'Nam' : 'Nữ'}</h3>
+                    <h3>{student.birth}</h3>
+                    <h3>{student.address}</h3>
+                    <img src={student.avatar}></img>
+                </>
+                :
+                <></>
+            }
 
         </>
     );

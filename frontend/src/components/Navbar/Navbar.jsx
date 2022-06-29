@@ -10,7 +10,9 @@ import jwt_decode from "jwt-decode";
 
 const Navbar = (props) => {
     let navigate = useNavigate()
-    const { username, setUser } = props
+    const { username, setUser, students, setStudents } = props
+    let listStudent = students
+    console.log(listStudent)
     useEffect(() => {
         const token = getCookie('token')
         if (token) {
@@ -18,6 +20,10 @@ const Navbar = (props) => {
 
             setUser(decoded.username)
         }
+    }, [])
+
+    useEffect(() => {
+
     }, [])
 
     function getCookie(cname) {
@@ -54,13 +60,21 @@ const Navbar = (props) => {
         deleteAllCookies()
         navigate('/')
     }
+    const handleSearch = async (e) => {
+        axios.get('http://localhost:3001/student/search', {
+            params: { name: e.target.value }
+        }).then((data) => {
+            setStudents(data.data);
+        })
+    }
     return (
-        <>
+        <div className="mb-5">
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container">
                     <Link className="navbar-brand" to="/">Navbar</Link>
                     <form className="d-flex">
-                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                            onChange={handleSearch} />
                         <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
                     <div className="">
@@ -77,7 +91,7 @@ const Navbar = (props) => {
                     </div>
                 </div>
             </nav>
-        </>
+        </div>
     );
 }
 

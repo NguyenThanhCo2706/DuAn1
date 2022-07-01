@@ -84,7 +84,8 @@ const studentController = {
             let gender = req.body.gender;
             let birth = req.body.birth;
             let address = req.body.address;
-            let avatar = req.body.avatar;
+            let avatar = req.file.originalname;
+            console.log(id, name, gender, birth, address, avatar)
             if (name && gender && birth && avatar && address) {
                 let student = await Students.findById({
                     _id: id

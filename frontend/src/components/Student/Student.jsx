@@ -26,12 +26,17 @@ const Student = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:3001/student/', {
+        axios.get('/student/', {
             params: { id: id },
             headers: {
                 "token": `Bearer ${getCookie('token')}`,
             }
         }).then((data) => {
+            let date = new Date(data.data.birth)
+            let day = date.getDate()
+            let month = date.getMonth()
+            let year = date.getFullYear()
+            data.data.birth = year + "-" + month + "-" + day
             setStudent(data.data)
             console.log(student)
         }).catch(() => {
@@ -43,16 +48,27 @@ const Student = () => {
     return (
         <>
             {student ?
-                <><h1>{student.name}</h1>
-                    <h3>{student.gender ? 'Nam' : 'Nữ'}</h3>
-                    <h3>{student.birth}</h3>
-                    <h3>{student.address}</h3>
-                    <img src={student.avatar}></img>
+                <>
+                    <div className="card mb-3" style={{ "maxWidth": "540px;" }}>
+                        <div className="row g-0">
+                            <div className="col-md-4">
+                                <img src={"/public/uploads/" + student?.avatar} className="img-fluid rounded-start" alt="..." />
+                            </div>
+                            <div className="col-md-8">
+                                <div className="card-body">
+                                    <h3 className="card-title">{student.name}</h3>
+                                    <p className="card-text">Gender: {student.gender ? 'Nam' : 'Nữ'}</p>
+                                    <p className="card-text"><small className="text-muted">{student.birth}</small></p>
+                                    <p className="card-text">{student.address}</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </>
                 :
                 <></>
             }
-
         </>
     );
 }

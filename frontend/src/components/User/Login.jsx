@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-
+// import logo from './1.jpg'
 
 
 const Login = (props) => {
@@ -26,18 +26,18 @@ const Login = (props) => {
         try {
             const response = await axios({
                 method: "post",
-                url: "http://localhost:3001/user/login",
+                url: "/user/login",
                 data: loginFormData
             });
             setCookie('token', response.data.token, 1)
             navigate('/')
         } catch (error) {
-            console.log(error)
+            alert('Wrong account')
         }
     }
     return (
         <div className="d-flex flex-column align-items-center">
-
+            <img src="/public/uploads/1.jpg" alt="" />
             <form onSubmit={handleSubmit} className="w-50 p-5 bg-light rounded-3">
                 <h2 className="text-center mb-2">Login</h2>
                 <div className="mb-3">

@@ -10,9 +10,7 @@ import jwt_decode from "jwt-decode";
 
 const Navbar = (props) => {
     let navigate = useNavigate()
-    const { username, setUser, students, setStudents } = props
-    let listStudent = students
-    console.log(listStudent)
+    const { username, setUser, setStudents, setCow } = props
     useEffect(() => {
         const token = getCookie('token')
         if (token) {
@@ -20,10 +18,6 @@ const Navbar = (props) => {
 
             setUser(decoded.username)
         }
-    }, [])
-
-    useEffect(() => {
-
     }, [])
 
     function getCookie(cname) {
@@ -55,13 +49,13 @@ const Navbar = (props) => {
     }
 
     const handleLogout = async () => {
-        await axios.get('http://localhost:3001/user/logout')
+        await axios.get('/user/logout')
         setUser('')
         deleteAllCookies()
         navigate('/')
     }
     const handleSearch = async (e) => {
-        axios.get('http://localhost:3001/student/search', {
+        axios.get('/student/search', {
             params: { name: e.target.value }
         }).then((data) => {
             setStudents(data.data);

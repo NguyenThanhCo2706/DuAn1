@@ -5,8 +5,8 @@ import { useState } from "react";
 
 
 
-const CreateStudent = () => {
-
+const CreateStudent = (props) => {
+    const { setStudents } = props;
     const [name, setName] = useState("")
     const [gender, setGender] = useState(false)
     const [birth, setBirth] = useState("")
@@ -42,13 +42,16 @@ const CreateStudent = () => {
         try {
             const response = await axios({
                 method: "post",
-                url: "http://localhost:3001/student",
+                url: "/student",
                 headers: {
                     "token": `Bearer ${getCookie('token')}`,
                 },
                 data: dataForm
             });
             console.log(response)
+            await axios.get('/student/list').then((data) => {
+                setStudents(data.data);
+            })
             navigate('/')
         } catch (error) {
             console.log(error)
@@ -73,7 +76,7 @@ const CreateStudent = () => {
                     <div className="form-text">We'll never share your username with anyone else.</div>
                 </div>
                 <div className="form-check">
-                    <input className="form-check-input" type="radio" name='Gender'
+                    <input className="form-check-input" type="radio" name='Gender' checked
                         onChange={(e) => setGender(true)}
                     />
                     <label className="form-check-label">
@@ -110,7 +113,9 @@ const CreateStudent = () => {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Avatar</label>
-                    <input type="file" onChange={handleFileSelect} />
+                    <div>
+                        <input type="file" onChange={handleFileSelect} />
+                    </div>
                     {/* <input
                         type="text"
                         className="form-control w-25"

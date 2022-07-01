@@ -5,8 +5,8 @@ import { useState } from "react";
 
 
 
-const UpdateStudent = () => {
-
+const UpdateStudent = (props) => {
+    const { setStudents } = props;
     const { id } = useParams()
     const [name, setName] = useState("")
     const [gender, setGender] = useState(false)
@@ -32,13 +32,18 @@ const UpdateStudent = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:3001/student/', {
+        axios.get('/student/', {
             params: { id: id },
             headers: {
                 "token": `Bearer ${getCookie('token')}`,
             }
         }).then((data) => {
             let student = data.data
+            let date = new Date(student.birth)
+            let day = ("0" + date.getDate()).slice(-2);
+            let month = ("0" + (date.getMonth() + 1)).slice(-2);
+            let year = date.getFullYear()
+            student.birth = year + "-" + month + "-" + day
             setName(student.name)
             setGender(student.gender)
             setBirth(student.birth)
@@ -52,7 +57,7 @@ const UpdateStudent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const dataForm = new URLSearchParams();
+        const dataForm = new FormData();
         dataForm.append("id", id)
         dataForm.append("name", name)
         dataForm.append("gender", gender)
@@ -62,18 +67,25 @@ const UpdateStudent = () => {
         try {
             await axios({
                 method: "PUT",
-                url: "http://localhost:3001/student",
+                url: "/student",
                 headers: {
                     "token": `Bearer ${getCookie('token')}`,
                 },
                 data: dataForm
             });
+            await axios.get('/student/list').then((data) => {
+                setStudents(data.data);
+            })
             navigate('/')
         } catch (error) {
             console.log(error)
         }
     }
 
+    const handleFileSelect = (event) => {
+        setAvatar(event.target.files[0])
+    }
+    console.log(gender)
     return (
         <>
             <form onSubmit={handleSubmit}>
@@ -88,20 +100,16 @@ const UpdateStudent = () => {
                     <div className="form-text">We'll never share your username with anyone else.</div>
                 </div>
                 <div className="form-check">
-                    <input className="form-check-input" type="radio" name='Gender'
+                    <input className="form-check-input" type="radio" name='Gender' checked
                         onChange={(e) => setGender(true)}
                     />
-                    <label className="form-check-label">
-                        Nam
-                    </label>
+                    <label className="form-check-label">Nam</label>
                 </div>
                 <div className="form-check">
                     <input className="form-check-input" type="radio" name='Gender'
                         onChange={(e) => setGender(false)}
                     />
-                    <label className="form-check-label">
-                        Nữ
-                    </label>
+                    <label className="form-check-label">Nữ</label>
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Birth</label>
@@ -125,12 +133,9 @@ const UpdateStudent = () => {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Avatar</label>
-                    <input
-                        type="text"
-                        className="form-control w-25"
-                        value={avatar}
-                        onChange={(e) => setAvatar(e.target.value)}
-                    />
+                    <div>
+                        <input type="file" onChange={handleFileSelect} />
+                    </div>
                     <div className="form-text">We'll never share your username with anyone else.</div>
                 </div>
                 <div className="d-flex">

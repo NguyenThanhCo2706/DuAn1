@@ -15,26 +15,25 @@ function App() {
   const [username, setUsername] = useState('')
   const [students, setStudents] = useState()
   useEffect(() => {
-    axios.get('http://localhost:3001/student/list').then((data) => {
+    axios.get('/student/list').then((data) => {
       setStudents(data.data);
     })
-
   }, [])
+  console.log(students)
   return (
     <Router>
       <Navbar
         username={username}
         setUser={setUsername}
-        students={students}
-        setStudents={setStudents} />
+        setStudents={setStudents}
+      />
       <div className="App">
         <Routes>
           <Route path="/" element={<HomePage students={students} setStudents={setStudents} />} />
           <Route path="/login" element={<Login setUser={setUsername} />} />
           <Route path="/viewstudent/:id" element={<Student />} />
-          <Route path="/updatestudent/:id" element={<UpdateStudent />} />
-          <Route path="/createstudent" element={<CreateStudent />} />
-
+          <Route path="/updatestudent/:id" element={<UpdateStudent setStudents={setStudents} />} />
+          <Route path="/createstudent" element={<CreateStudent setStudents={setStudents} />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </div>

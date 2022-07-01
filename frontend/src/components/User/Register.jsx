@@ -22,11 +22,12 @@ const Register = () => {
         try {
             await axios({
                 method: "post",
-                url: "http://localhost:3001/user/register",
+                url: "/user/register",
                 data: registerForm
             });
             navigate('/login')
         } catch (error) {
+            alert('Input valid')
             console.log(error)
         }
     }

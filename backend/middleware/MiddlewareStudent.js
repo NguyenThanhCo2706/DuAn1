@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ dest: './public/uploads/', storage: storage, fileFilter: imgFilter.imgFilter })
 
 const MiddlewareStudent = {
-    handleCreate: upload.single('avatar')
+    handleUpload: upload.single('avatar')
 }
 
 module.exports = MiddlewareStudent

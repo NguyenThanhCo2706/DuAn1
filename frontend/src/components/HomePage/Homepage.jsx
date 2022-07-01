@@ -25,7 +25,7 @@ const HomePage = (props) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete('http://localhost:3001/student/', {
+            await axios.delete('/student/', {
                 params: { id: id },
                 headers: {
                     "token": `Bearer ${getCookie('token')}`,

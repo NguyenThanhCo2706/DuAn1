@@ -1,11 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 
 
 
 const HomePage = (props) => {
     const { students, setStudents } = props
+    const [sizePage, setSizePage] = useState(5)
+    const [newsList, setNewsList] = useState(students)
+    const [pageNumber, setPageNumber] = useState([])
+    useEffect(() => {
+        setNewsList(students?.slice(0, sizePage))
+        let arr = []
+        for (let i = 0; i < Math.ceil(students?.length / sizePage); i++) {
+            arr.push(i)
+        }
+        setPageNumber(arr)
+    }, [students])
     let navigate = useNavigate()
     function getCookie(cname) {
         let name = cname + "=";
@@ -38,6 +50,17 @@ const HomePage = (props) => {
         }
         navigate('/')
     }
+    const handleChangeSizepage = (e) => {
+        setSizePage(e.target.value)
+        let arr = []
+        for (let i = 0; i < Math.ceil(students?.length / e.target.value); i++) {
+            arr.push(i)
+        }
+        setPageNumber(arr)
+    }
+    const sendCurrentPage = (item) => {
+        setNewsList(students.slice(item * sizePage, (item + 1) * sizePage))
+    }
     return (
         <>
             <h1 className="text-center">Student </h1>
@@ -56,7 +79,7 @@ const HomePage = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {students?.map((item, index) => {
+                    {newsList?.map((item, index) => {
                         return (
                             <tr key={index}>
                                 <th scope="row">{index + 1}</th>
@@ -72,6 +95,23 @@ const HomePage = (props) => {
                     })}
                 </tbody>
             </table>
+            <div>
+                <select className="form-select w-25" defaultValue={sizePage} onChange={handleChangeSizepage}>
+                    <option value="5">5</option>
+                    <option value="7">7</option>
+                    <option value="9">9</option>
+                </select>
+            </div>
+            <div className="text-center">
+                {
+
+                    pageNumber.map((item, index) => {
+                        return (
+                            <span key={index} onClick={() => sendCurrentPage(item)}>{item + 1} </span>
+                        )
+                    })
+                }
+            </div>
             <div className="d-flex justify-content-end">
                 <Link to={`/createstudent/`}><button type="button" className="btn btn-success">Create</button></Link>
             </div>

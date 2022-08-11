@@ -9,11 +9,13 @@ import CreateStudent from './components/Student/CreateStudent'
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Register from './components/User/Register';
+import SearchPage from './components/SearchPage/SearchPage';
 
 
 function App() {
   const [username, setUsername] = useState('')
   const [students, setStudents] = useState()
+  const [listSearch, setListSearch] = useState()
   useEffect(() => {
     axios.get('/student/list').then((data) => {
       setStudents(data.data);
@@ -26,6 +28,7 @@ function App() {
         username={username}
         setUser={setUsername}
         setStudents={setStudents}
+        setSearch={setListSearch}
       />
       <div className="App">
         <Routes>
@@ -35,6 +38,8 @@ function App() {
           <Route path="/updatestudent/:id" element={<UpdateStudent setStudents={setStudents} />} />
           <Route path="/createstudent" element={<CreateStudent setStudents={setStudents} />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/listsearch" element={<SearchPage listSearch={listSearch} />} />
+
         </Routes>
       </div>
     </Router>

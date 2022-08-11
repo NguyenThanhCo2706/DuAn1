@@ -8,16 +8,13 @@ import jwt_decode from "jwt-decode";
 
 
 
-const Navbar = (props) => {
+const Navbar = () => {
     let navigate = useNavigate()
-    const { username, setUser, setStudents, setSearch } = props
     const [listSearch, setListSearch] = useState()
     useEffect(() => {
         const token = getCookie('token')
         if (token) {
             const decoded = jwt_decode(token);
-
-            setUser(decoded.username)
         }
     }, [])
 
@@ -51,7 +48,6 @@ const Navbar = (props) => {
 
     const handleLogout = async () => {
         await axios.get('/user/logout')
-        setUser('')
         deleteAllCookies()
         navigate('/')
     }
@@ -64,7 +60,6 @@ const Navbar = (props) => {
                 params: { name: e.target.value }
             }).then((data) => {
                 setListSearch(data.data)
-                setSearch(data.data)
             })
         }
     }
@@ -91,7 +86,10 @@ const Navbar = (props) => {
                         </div>
                     </div>
                     <div className="">
-                        {username === "" ?
+                        <div>
+                            <Link className="navbar-brand" to="/login">Login</Link>
+                        </div>
+                        {/* {username === "" ?
                             <div>
                                 <Link className="navbar-brand" to="/login">Login</Link>
                             </div>
@@ -100,7 +98,7 @@ const Navbar = (props) => {
                                 <span className="navbar-brand">{`Hi, ${username}`}</span>
                                 <span className="navbar-brand" onClick={handleLogout}>Logout</span>
                             </div>
-                        }
+                        } */}
                     </div>
                 </div>
             </nav>

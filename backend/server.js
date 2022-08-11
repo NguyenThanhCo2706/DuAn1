@@ -20,13 +20,13 @@ app.use(cookieParser());
 app.use('/user', user)
 app.use('/student', student)
 app.use(express.static(path.join(__dirname)));
-console.log(path.join(__dirname ))
+console.log(path.join(__dirname))
 
 app.get('/', async (req, res) => {
     const users = await Users.find()
     res.status(200).json(users)
 })
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log('listening on port http://localhost:' + port);
 })
